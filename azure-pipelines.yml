@@ -3,7 +3,7 @@
 # https://docs.microsoft.com/azure/devops/pipelines/languages/docker
 
 trigger:
-- parkstay_bs_reporting
+- main
 
 resources:
 - repo: self
@@ -11,7 +11,7 @@ resources:
 variables:
   tag: '$(Build.BuildId)'
   tagDate: $[ format('{0:yyyy}.{0:MM}.{0:dd}.{0:HH}.{0:mm}{0:ss}', pipeline.startTime) ]
-  isMain: $[eq(variables['Build.SourceBranch'], 'refs/heads/parkstay_bs_reporting')]
+  isMain: $[eq(variables['Build.SourceBranch'], 'refs/heads/main')]
   
 stages:
 - stage: Build
@@ -29,8 +29,8 @@ stages:
         command: buildAndPush
         dockerfile: '$(Build.SourcesDirectory)/Dockerfile'
         tags: | 
-              parkstay_bs_reporting_latest
-              parkstay_bs_reporting_$(tagDate)
+              latest
+              $(tagDate)
         containerRegistry: DockerGitHub
         repository: ghcr.io/dbca-wa/parkstay_bs
     - task: Docker@2
